@@ -1,0 +1,71 @@
+# set root password
+mysqladmin -u root password NEWPASS
+
+# change root password (might show in history)
+mysqladmin -u root -pOLDPASS password NEWPASS
+
+# check if server is running
+mysqladmin -u root -p ping
+
+# check version
+mysqladmin -u root -p version
+
+# check status
+mysqladmin -u root -p status
+
+# get data at a specific interval (60 seconds here)
+mysqladmin -u root -p status -ri60
+
+# get extended status
+mysqladmin -u root -p extended-status
+
+# get variables
+mysqladmin -u root -p variables
+
+# get processlist
+mysqladmin -u root -p processlist
+
+# create database
+mysqladmin -u root -p create DBNAME
+
+# drop database
+mysqladmin -u root -p drop DBNAME
+
+# reload privileges (reload grant tables)
+mysqladmin -u root -p reload
+
+# flush tables and reopen logs
+mysqladmin -u root -p refresh
+
+# shutdown safely (/etc/init.d/mysql stop is ok too)
+mysqladmin -u root -p shutdown
+
+# flush other stuff
+mysqladmin -u root -p flush-hosts
+mysqladmin -u root -p flush-tables
+mysqladmin -u root -p flush-threads
+mysqladmin -u root -p flush-logs
+mysqladmin -u root -p flush-privileges
+mysqladmin -u root -p flush-status
+
+# kill client process
+# obtain value from processlist first
+mysqladmin -u root -p kill 5
+# for multiple processes
+mysqladmin -u root -p kill 5,10
+
+# run multiple commands together
+mysqladmin -u root -p version status
+
+# connect to remote server
+mysqladmin -h 10.0.3.101 -u root -p
+
+# execute command on remote server
+mysqladmin -h 10.0.3.101 -u root -p status
+
+# start / stop replication on a slave
+mysqladmin -u root -p start-slave
+mysqladmin -u root -p stop-slave
+
+# dump debug info to logs (/var/log/mysql/error.log most often)
+mysqladmin -u root -p debug

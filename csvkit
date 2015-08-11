@@ -1,0 +1,81 @@
+# installation
+sudo pip install csvkit
+
+# convert Excel to CSV
+in2csv data.xls > data.csv
+
+# convert JSON to CSV
+in2csv data.json > data.csv
+
+# print column names
+csvcut -n data.csv
+
+# select a subset of columns
+csvcut -c col_a,col_d data.csv > new.csv
+
+# select a subset of columns by number (and range)
+csvcut -c 1-3,8 data.csv > new.csv
+
+# select a column from file with a nonstandard delimiter
+csvcut -c name -d \; data.csv > new.csv
+
+# reorder columns
+csvcut -c col_a,col_d,col_c,col_b data.csv > new.csv
+
+# find rows with matching cells (with regex)
+csvgrep -c phone_number -r "555-555-\d{3}" data.csv > matching.csv
+
+# print subset of columns and find rows with matching cells (by string)
+csvcut -c name,amount data.csv | csvgrep -c name -m Joe
+
+# generate SQL-like statistics
+csvstat data.csv
+
+# generate statistics for specific columns only
+csvcut -c name,amount | csvstat
+
+# parse file with nonstandard (non-UTF-8) encoding
+csvstat -e ISO-8859-2 pl.csv
+
+# query with SQL
+csvsql --query "select name from data where age > 30" data.csv > matching.csv
+
+# import into PostgreSQL
+csvsql --db postgresql:///database --insert data.csv
+
+# extract data from PostgreSQL
+sql2csv --db postgresql:///database --query "select * from data" > extract.csv
+
+# pretty-print a file
+csvlook data.csv
+
+# select columns from xls file and pretty print it
+in2csv data.xls | csvcut -c name,order_no | csvlook
+
+# sort data on specific column
+csvsort -c name data.csv
+
+# print subset of columns and reverse-sort on specific column
+csvcut -c name,amount | csvsort -c amount -r
+
+# stack data from two files
+cvstack file1.csv file2.csv > both.csv
+
+# stack data from two files adding 'grouping column' to differentiate source
+csvstack file1.csv file2.csv -g file1,file2 > both.csv
+
+# create a JSON-formatted output
+csvjson --indent 2 data.csv
+
+# create a JSON-formatted output as a dictionary on specific (unique) key
+# (and not as a list)
+csvjson --indent 2 --key colname data.csv
+
+# start Python (or iPython) interpreter with data already read
+csvpy data.csv
+
+# format file (if another tool needs specific formatting) with a pipe separator
+csvformat -D \| data.csv
+
+# format with a tab separator and quoting each field
+csvformat -T -U data.csv

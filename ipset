@@ -1,0 +1,32 @@
+# create new set
+ipset create NAME TYPE
+
+# create new set of subnets
+ipset create poland hash:net
+
+# add entries to set
+ipset add poland 85.219.144.0/24
+
+# add exception to a set
+ipset add poland 85.219.145.0/24 nomatch
+
+# remove set
+ipset destroy poland
+
+# remove entries from a set
+ipset flush poland
+
+# flush all entries from all sets
+ipset flush
+
+# rename set
+ipset rename poland polska
+
+# exchange contents of two existing sets
+ipset swap poland1 poland2
+
+# show entries in a set
+ipset list poland
+
+# check if an entry is in a set
+ipset test poland 85.219.144.244
