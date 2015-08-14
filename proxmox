@@ -1,0 +1,22 @@
+# create new cluster
+pvecm create CLUSTER_NAME
+# in the other server
+pvecm add OTHER_NODE_NAME
+
+# verify cluster status
+pvecm status
+pvecm nodes
+clustat
+fence_tool ls
+drbd-overview
+cat /proc/drbd
+
+# initiate VM migration
+clusvcadm -r pvevm:VM_ID PVE_NODE
+
+# show KVM VMs
+qm list
+
+# move KVM disk to different storage
+qm move_disk VMID DISK STORAGE
+# disk is ideX|sataX|virtioX|scsiX
