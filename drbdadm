@@ -1,0 +1,29 @@
+# configure resource
+# http://drbd.linbit.com/users-guide-8.3/s-first-time-up.html
+#
+# in both servers
+drbdadm create-md RES # create metadata
+drbdadm attach RES    # attach resource
+drbdadm syncer RES    # start synchronization stuff
+drbdadm connect RES   # connect to peers
+
+# in one ('primary') server
+drbdadm -- --overwrite-data-of-peer primary RES
+
+# useful aliases
+drbdadm up   RES # alias for attach & connect
+drbdadm down RES # alias for disconnect & detach
+
+###############################################################################
+# sync new server with cluster
+# in 'new' server
+drbdadm -- --discard-my-data connect RES
+# in existing server with up-to-date data
+drbdadm -- --force primary RES
+drbdadm connect RES
+
+###############################################################################
+# monitor state
+drbdadm role   RES|all
+drbdadm cstate RES|all
+drbdadm dstate RES|all
