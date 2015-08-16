@@ -1,0 +1,37 @@
+# get specific fact using the setup module
+ansible -m setup -a 'filter=ansible_distribution_release'
+
+# get group of facts
+ansible -m setup -a 'filter=ansible_eth*'
+
+# list tasks in a playbook
+ansible-playbook --list-tasks playbook.yml
+
+# list hosts affected by a playbook
+ansible-playbook --list-hosts playbook.yml
+
+# check playbook syntax without running it
+ansible-playbook --syntax-check playbook.yml
+
+# confirm each task in a playbook interactively
+ansible-playbook --step playbook.yml
+
+# skip tasks with specific tags
+ansible-playbook --skip-tags=tag1,tag2 playbook.yml
+
+# run only tasks with specific tags
+ansible-playbook --tags=tag1,tag2 playbook.yml
+
+# start playbook execution at a given task (i.e. after fixing error in a task)
+ansible-playbook --start-at-task=TASKNAME playbook.yml
+
+# initialize new role (create skeleton structure)
+ansible-galaxy init [rolename]
+
+# common ansible-vault operations
+ansible-vault encrypt file.yml
+ansible-vault decrypt file.yml
+ansible-vault view    file.yml # print decrypted contents of a file
+ansible-vault create  file.yml # create a new encrypted file (open an editor)
+ansible-vault edit    file.yml
+ansible-vault rekey   file.yml # change vault password
