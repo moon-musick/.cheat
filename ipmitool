@@ -1,0 +1,60 @@
+# local link - list users
+ipmitool user list 1 # 1 is channel id
+
+# remote link - list users
+ipmitool -I lanplus -U <user> -H <host> user list 1
+
+# use -L LEVEL (OPERATOR|USER|ADMINISTRATOR) to specify privilege level
+# if using non-administrator accounts
+ipmitool [options] -U <user> -L <level> user list 1
+
+# use passfile
+# does not work properly with passwords with whitespaces
+ipmitool -I lanplus -U <user> -H <host> -f <passfile> user list 1
+
+# get power status
+ipmitool [options] power status
+
+# get general chassis status
+ipmitool [options] chassis status
+
+# force power on/off/cycle/reset
+ipmitool [options] power on|off|cycle|reset
+
+# change boot device for the next boot
+ipmitool [options] bootdev pxe|disk|safe|cdrom|bios|floppy
+
+# show hardware info
+ipmitool [options] fru print
+
+# show LAN info
+ipmitool [options] lan print [channelid]
+
+# show LAN alerts
+ipmitool [options] lan alert print
+
+# configure LAN
+ipmitool lan set <channelid> ipsrc static
+ipmitool lan set <channelid> ipaddr 10.0.0.254
+ipmitool lan set <channelid> netmask 255.255.255.0
+ipmitool lan set <channelid> defgw ipaddr 10.0.0.1
+ipmitool lan set <channelid> defgw macaddr 00:11:22:33:44:55
+ipmitool lan set <channelid> arp respond on
+ipmitool lan set <channelid> auth ADMIN MD5
+ipmitool lan set <channelid> access on
+
+# show sensor data
+ipmitool [options] sdr list full
+ipmitool [options] sensor list
+
+# start interactive shell
+ipmitool [options] shell
+
+# get dell-specific data (might require a newer ipmitool version)
+ipmitool [options] delloem mac list
+ipmitool [options] delloem lcd status
+ipmitool [options] delloem lan get
+ipmitool [options] delloem powermonitor powerconsumption
+
+# run ipmitool commands from file
+ipmitool [options] exec <filename>
