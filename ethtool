@@ -1,0 +1,22 @@
+# show general data
+ethtool eth0
+
+# show traffic statistics
+ethtool -S eth0
+
+# show NIC features
+ethtool -k eth0
+
+# show driver info
+ethtool -i eth0
+
+# blink NIC lights for 10 seconds
+ethtool -p eth0 10
+
+# run online|offline test (offline is disrupting)
+ethtool -t eth0 online|offline
+
+# set NIC parameters
+ethtool -s eth0 speed 1000
+ethtool -s eth0 duplex full
+ethtool -s eth0 autoneg on speed 100
