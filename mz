@@ -1,0 +1,16 @@
+# run 1023 frames of TCP SYN packages with random src address,
+# dport random from 1-1023 range and "syn flood" ASCII payload
+mz eth0 -A rand -B 192.168.0.1 -c 1 -t tcp "dp=1-1023, flags=syn" -P "syn flood"
+
+# run broadcast storm at maximum rate (no packet count limit)
+mz eth0 -c 0 -b bcast
+
+# run 2047 ip packets at 1/10msec rate with "testing" payload
+mz eth0 -t ip -B 172.16.0.20 -P "testing" -d 10msec -c 2
+
+# run a CAM table overflow attack (fill up CAM table of a switch)
+mz eth0 -c 128000 -a rand -p 64
+
+# send 3 forged syslog messages with severity == 3 and a spoofed source address
+# in 10 seconds interval
+mz -t syslog sev=3 -P "Critical error" -A 192.168.1.5 -B 192.168.2.15 -c 3 -d 10s

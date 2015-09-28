@@ -27,3 +27,7 @@ drbdadm connect RES
 drbdadm role   RES|all
 drbdadm cstate RES|all
 drbdadm dstate RES|all
+
+###############################################################################
+# reload configuration after modification
+drbdadm adjust RES|all

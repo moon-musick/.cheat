@@ -1,0 +1,26 @@
+# Install the package or upgrade it
+dpkg -i test.deb
+
+# Remove a package including configuration files
+dpkg -P test.deb
+
+# List all installed packages with versions and details
+dpkg -I
+
+# Find out if a Debian package is installed or not
+dpkg -s test.deb | grep Status
+
+# List contents of an installed package named 'test'
+dpkg -L test
+
+# List contents of a package file
+dpkg -c test.deb
+
+# Get a list of (installed) packages providing files with 'PATTERN' in their names
+dpkg -S PATTERN
+
+# Extract package contents (excluding metadata) to directory DATA
+dpkg -x test.deb DATA
+
+# Extract package metadata to directory METADATA
+dpkg -e test.deb METADATA
