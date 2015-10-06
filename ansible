@@ -35,3 +35,6 @@ ansible-vault view    file.yml # print decrypted contents of a file
 ansible-vault create  file.yml # create a new encrypted file (open an editor)
 ansible-vault edit    file.yml
 ansible-vault rekey   file.yml # change vault password
+
+# exclude host or group in a command argument pattern
+ansible -m ping 'all:!webservers'
