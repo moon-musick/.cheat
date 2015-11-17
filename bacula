@@ -1,0 +1,28 @@
+# add new bacula client
+# client machine:
+apt-get install bacula-common bacula-fd
+vim /etc/bacula/bacula-fd.conf
+service bacula-fd restart
+
+# server machine:
+# configuration files:
+vim /etc/bacula/bacula-sd.conf  # add new Device section
+vim /etc/bacula/bacula-dir.conf # add new Storage section
+vim /etc/bacula/includes/CLIENT-dir.conf # Client, Job, JobDefs, FileSet, Pool
+vim /etc/bacula/bacula-dir.conf # enable new include for CLIENT-dir.conf
+vim /etc/bacula/includes/CLIENT-fileset.inc
+vim /etc/bacula/includes/CLIENT-fileset.exc
+
+# volume files
+touch VOLUMEDIR/CLIENT-volume.000{1..3}
+chown bacula:tape VOLUMEDIR/CLIENT-volume.*
+
+service bacula-sd restart
+echo "reload" | bconsole
+
+bconsole
+> list volume pool=CLIENT-pool
+> add volume pool=CLIENT-pool
+# base name = CLIENT-volume. (trailing dot significant)
+> run job=CLIENT-job level=Full
+> status director
