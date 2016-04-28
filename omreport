@@ -1,0 +1,62 @@
+# 'chassis' reporting commands
+omreport chassis acswitch
+omreport chassis bios
+omreport chassis biossetup
+omreport chassis currents
+omreport chassis events
+omreport chassis fancontrol
+omreport chassis fans
+omreport chassis firmware
+omreport chassis info
+omreport chassis intrusion
+omreport chassis leds
+omreport chassis memory
+omreport chassis nics
+omreport chassis ports
+omreport chassis powerbutton
+omreport chassis processors
+omreport chassis pwrsupplies
+omreport chassis slots
+omreport chassis temps
+omreport chassis volts
+
+# 'storage'
+omreport storage
+omreport storage pdisk      # Display physical disk(s) properties.
+omreport storage vdisk      # Display virtual disk(s) properties.
+omreport storage controller # Display controller(s) properties.
+omreport storage enclosure  # Display enclosure properties.
+omreport storage battery    # Display battery properties.
+omreport storage globalinfo # Display global storage properties.
+omreport storage connector  # Display connector properties.
+omreport storage cachecade  # Display cachecade(s) properties.
+
+
+# 'system' commands
+omreport system alertaction
+omreport system alertlog
+omreport system assetinfo
+omreport system cmdlog
+omreport system esmlog
+omreport system events
+omreport system operatingsystem
+omreport system postlog
+omreport system recovery
+omreport system shutdown
+omreport system summary
+omreport system thrmshutdown
+omreport system version
+
+# Remote Access Controller
+omreport rac
+
+# get a list of available commands
+omreport -?
+
+# format output
+# omreport [...] -fmt <lst|tbl|ssv|cdv|xml>
+omreport chassis processors -fmt tbl
+# lst - list
+# tbl - table
+# ssv - semicolon separated values
+# cdv - custom delimiter separated format
