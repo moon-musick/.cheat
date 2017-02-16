@@ -1,0 +1,3 @@
+# vim: ft=sh ts=2:sts=2:sw=2:et
+# debug, e.g. a TLS setup
+ldapsearch -H ldaps://HOST -x -D "BINDDATA" -b "SEARCHBASE" -w "PASSWORD" -d -1 -ZZ
