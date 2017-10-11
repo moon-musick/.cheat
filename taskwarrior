@@ -1,0 +1,184 @@
+# vim: ft=sh ts=2:sts=2:sw=2:et
+
+# adding tasks ################################################################
+
+# add task with a tag
+t add +work
+# add task with a project
+t add project:nagios
+# multiline description
+t add "one two three
+four five six
+seven eight nine"
+
+# add already completed task
+t log some task
+
+# modifying tasks #############################################################
+
+# add project
+t 5 modify project:nagios
+# remove project
+t 5 modify project:
+# add tag
+t 5 modify +work
+# remove tag
+t 5 modify -work
+# replace description
+t 5 modify new description
+# replace string in description
+t 5 modify /old and inaccurate/new and fancy/
+# prepend or append description
+t 5 append "- don't forget to frobnicate"
+t 5 prepend 'kitchen - '
+# annotate task
+t 5 annotate add water too
+# remove annotation
+t denotate
+# edit task in editor
+t 5 edit
+# mark task as started or remove the started status
+t 5 start
+t 5 stop
+
+# other task operations #######################################################
+
+# remove task
+t 5 delete
+# set task as done
+t 5 done
+t 5 duplicate
+# revert the most recent change to a task
+t 5 undo
+
+# task details ################################################################
+
+t 1
+# acually aliased to
+t 1 information
+
+# listing tasks ###############################################################
+
+t [FILTER] next # most urgent tasks
+t [FILTER] ls   # few details
+t [FILTER] list # most details
+t [FILTER] long # all details
+t [FILTER] completed
+t [FILTER] overdue
+t [FILTER] active
+t [FILTER] ready
+t [FILTER] recurring
+t [FILTER] blocking
+t [FILTER] blocked
+t [FILTER] unblocked
+t [FILTER] waiting
+t oldest
+t newest
+
+# list projects
+t projects
+# list tags in use
+t tags
+
+# show ids of matching tasks (as a range)
+t [FILTER] ids
+# show uuids of matching tasks (as a list)
+t [FILTER] uuids
+
+# contexts ####################################################################
+
+# define context
+# context define name +tag1 +tag2 -tag3
+t context define work +work
+t context define home -work -homework -lab
+
+# show current context
+t context show
+
+# show all defined contexts
+t context list
+
+# switch contexts
+t context work
+
+# switch context filtering off
+t context none
+
+# delete a context
+t context delete work
+
+# date patterns ###############################################################
+
+# precise dates or times
+t add due:24h
+t add due:2017-10-10
+t add due:2017-10-10T16:10:00+02:00
+
+# week scale dates
+t add due:today       # yesterday, tomorrow (time 0:00)
+t add due:mon         # tue, tuesday (time 0:00)
+t add due:eod         # end of today, sod - start of today (time 0:00)
+t add due:sow         # start of the next week, eow - end of the week (time 0:00)
+t add due:socw        # start of the current week, eocw - end of the current week (time 0:00)
+t add due:soww        # start of the next work week, eoww - end of the work week (time 0:00)
+
+# month scale dates
+t add due:1st         # 2nd, 3rd etc.
+
+# year scale dates
+t add due:may         # jan, january
+t add due:eom         # end of the next month, som - start of the next month
+t add due:eoq         # end of the quarter, soq - start of the next quarter
+t add due:soy         # start of the next year, eoy - end of the year
+t add due:socy        # start of the current year, eocy - end of the current year
+t add due:socq        # start of the current quarter, eocq - end of the current quarter
+t add due:socm        # start of the current month, eocm - end of the current month
+
+# misc
+t add due:now
+t add due:someday     # end of the unix epoch (2038-01-18 00:00:00)
+t add due:later       # same as above
+
+# show tasks with any due date
+t due.any: list
+# show tasks with no due date defined
+t due.none: list
+
+# reports #####################################################################
+
+t burndown            # by default it's weekly - x asix is weeks
+t burndown.daily
+t burndown.weekly
+t burndown.monthly
+t history
+t [FILTER] completed
+# examples
+t end.after:socm completed
+t end.after:2017-09-01 and end.before:2017-10-01
+# completed today
+t end.after:sod and end.before:eod completed
+# task summary by project
+t summary
+# weekly timesheet
+t timesheet
+
+# virtual tags ################################################################
+# https://taskwarrior.org/docs/tags.html
+
+# misc ########################################################################
+
+t calc
+t calendar
+t config
+t import
+t export
+t diagnostics
+t execute
+t synchronize
+t stats
+t reports # list supported reports
+
+# help ########################################################################
+
+t help
+t commands
