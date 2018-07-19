@@ -1,0 +1,61 @@
+# initialize a repository
+borg init --encryption=MODE # repokey | keyfile | authenticated | none
+
+# run a single backup
+borg create ARCHIVE PATH...
+# e.g.
+borg create -x -e /dev -e /run -e /proc -e /sys ssh://borg@backuper/home/borg/borgclient::Monday /
+
+# retrieve a file from archive
+borg extract ARCHIVE [PATH...]
+# e.g.
+borg extract /path/to/repo::Monday
+borg extract --dry-run --list /path/to/repo::Tuesday home/lucas/Documents
+# --numeric-owner keeps the original ID
+# without it borg tries to use existing UID/GIDs with the same name
+
+# check an archive or repository integrity
+borg check REPOSITORY_OR_ARCHIVE
+# e.g.
+borg check --archives-only /path/to/repo::Monday
+
+# full file integrity verification (apparently very slow)
+borg check --verify-data REPOSITORY
+
+# show repository or archive info
+borg info REPOSITORY_OR_ARCHIVE
+# e.g.
+borg info /path/to/repo
+# show individual archives details
+borg info --last 5 /path/to/repo
+
+# list archives in repository
+borg list REPOSITORY
+# e.g.
+borg list /pat/to/repo
+
+# list files in archive
+borg list ARCHIVE
+# e.g.
+borg list /path/to/repo::Monday
+
+# rename archive
+borg rename ARCHIVE NEWNAME
+# e.g.
+borg rename /path/to/repo::Monday safe
+
+# show differences between two archives in the same repository
+borg diff REPOSITORY_ARCHIVE1 ARCHIVE2
+# e.g.
+borg diff /path/to/repo::Monday Tuesday
+
+# delete archive or repository
+borg delete ARCHIVE
+borg delete REPOSITORY
+
+# prune archives (remove according to specified policy)
+borg prune REPOSITORY
+# e.g.
+borg prune --keep-daily=7 --keep-weekly=4 /path/to/repo
+borg prune --keep-last=14 /path/to/repo
+borg prune --keep-within=3d
