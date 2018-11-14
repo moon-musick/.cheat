@@ -24,3 +24,11 @@ dpkg -x test.deb DATA
 
 # Extract package metadata to directory METADATA
 dpkg -e test.deb METADATA
+
+###############################################################################
+
+# show held packages
+apt-mark showhold
+
+# show available package versions
+apt-cache madison NAME
