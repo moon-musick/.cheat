@@ -1,0 +1,25 @@
+# vim: ft=sh ts=2:sts=2:sw=2:et
+
+# cleanup #####################################################################
+
+# list dangling volumes
+docker volume ls -q -f 'dangling=true'
+# remove dangling volumes
+docker volume ls -q -f 'dangling=true' | xargs docker volume rm
+# list dangling images
+docker images -q -f 'dangling=true'
+# remove dangling images
+docker images -q -f 'dangling=true' | xargs docker rmi
+
+# misc ########################################################################
+
+# show image history (layers and possible parent images)
+docker history IMAGE
+
+# diagnostics #################################################################
+
+# inspect container's stdout
+docker attach CONTAINER
+
+# show disk usage
+docker system df [-v]
