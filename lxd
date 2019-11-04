@@ -1,0 +1,9 @@
+# vim: ft=sh ts=2:sts=2:sw=2:et
+# change ip address of the main managed bridge
+lxc network set lxdbr0 config.ipv4.address 10.222.80.1/24
+
+# set a static ipv4 address on a container interface
+lxc stop CONTAINER
+lxc network attach NETWORK CONTAINER eth0 eth0
+lxc config device set CONTAINER eth0 ipv4.address ADDRESS
+lxc start CONTAINER
