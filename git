@@ -1,0 +1,4 @@
+# vim: ft=sh ts=2:sts=2:sw=2:et
+
+# find first occurence of (fixed) string in history
+git log -S <string> --source --all
