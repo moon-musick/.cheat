@@ -1,0 +1,6 @@
+# get replication status (and hostnames)
+> rs.status()
+# remove node from replica set
+> rs.remove("hostname")
+# add arbiter to replica set
+> rs.addArb("hostname")
