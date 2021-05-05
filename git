@@ -2,3 +2,8 @@
 
 # find first occurence of (fixed) string in history
 git log -S <string> --source --all
+
+# delete remote branch
+git push REMOTE --delete BRANCH_NAME
+# e.g.
+git push origin --delete some_feature_branch
