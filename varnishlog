@@ -1,0 +1,97 @@
+# vim: ft=sh ts=2:sts=2:sw=2:et
+# https://feryn.eu/blog/varnishlog-measure-varnish-cache-performance/
+
+# tags ########################################################################
+
+# request tags:
+# ReqStart - indicates the start of request processing
+# ReqMethod
+# ReqURL
+# ReqProtocol
+# ReqHeader
+
+# response tags:
+# RespProtocol
+# RespStatus
+# RespReason - status code description
+# RespHeader
+
+# backend tags:
+# BackendOpen
+# BackendClose
+
+# backend request tags:
+# BereqMethod
+# BereqURL
+# BereqProtocol
+# BereqHeader
+
+# backend response tags:
+# BerespProtocol
+# BerespStatus
+# BerespReason
+# BerespHeader
+
+# object tags (very similar to backend response tags):
+# ObjProtocol
+# ObjStatus
+# ObjReason
+# ObjHeader
+
+# data modification tags:
+# ReqUnset
+# RespUnset
+
+# vcl behaviour tags:
+# VCL_Error
+# VCL_Log - custom log messages inserted with std.log()
+# VCL_acl
+# VCL_call - name of the method being executed - represents a state in the VCL
+# VCL_return - indicates the decision the VCL makes
+
+# miscellaneous tags:
+# ExpBan - added when an object is banned by the VCL
+# HitPass - marks a negative cache hit, that is the response cannot be cached
+#  and this decision is cached (shortcuts VCL execution for subsequent requests
+#  for the object's TTL time)
+
+# TTL tag - in backend transactions
+# 4 or 8 columns
+# if the values are set by the VCL, there are 4 columns:
+# "VCL" TTL grace keep 'reference time for the TTL (timestamp)'
+# if the values are based on the backend response headers, there are 8 columns:
+# "RFC" TTL grace keep 'reference time for the TTL (timestamp)' 'age header (timestamp)' 'date header' 'expires header' 'Cache-control: max-age value'
+
+# Begin tag - marks the beginning of a transaction, indicates the parent VXID
+# Link tag - indicates the child VXID
+# Timestamp tag - format: 'event label' 'timestamp' 'time since start of work unit' 'time since last timestamp'
+
+# output filtering ############################################################
+
+# user INCLUDE options before EXCLUDE options (order significant)
+
+# include only specific tags: -i
+varnishlog -i ReqURL
+# include tags by regexp: -I
+varnishlog -I 'reqheader:referer'
+# exclude tags: -x
+varnishlog -x ReqHeader
+# exclude tags by regexp: -X
+varnishlog -X 'respheader:(x|X)-'
+
+# examples ####################################################################
+
+# capture only first X transactions: -k
+varnishlog -k 10
+
+# show the url and Host header
+varnishlog -i ReqURL -I 'reqheader:host'
+
+# find cache hits, misses or passes
+varnishlog -q 'VCL_call eq "HIT"'
+
+# filter results by header value
+varnishlog -q 'ReqHeader:X-Forwarded-Proto eq "https"'
+
+# combine queries
+varnishlog -q 'ReqHeader:X-Forwarded-Proto eq "https" and VCL_call eq "HIT"'
