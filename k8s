@@ -1,0 +1,6 @@
+# vim: ft=sh ts=2:sts=2:sw=2:et
+# force delete pod
+kubectl delete pod --force --grace-period=0 POD_NAME
+
+# get pods running on a specific node
+k get pods --field-selector spec.nodeName=NODE_NAME
