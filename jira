@@ -1,0 +1,163 @@
+# vim: ft=sh ts=2:sts=2:sw=2:et
+# https://github.com/go-jira/jira
+#
+# https://support.atlassian.com/jira-software-cloud/docs/advanced-search-reference-jql-fields/
+# https://support.atlassian.com/jira-software-cloud/docs/advanced-search-reference-jql-functions/
+# https://support.atlassian.com/jira-software-cloud/docs/advanced-search-reference-jql-keywords/
+# https://support.atlassian.com/jira-software-cloud/docs/search-syntax-for-text-fields/
+#
+# listing issues ##############################################################
+# simple
+jira list --assignee=LOGIN
+# with additional parameters
+jira list --query "resolution = unresolved and assignee=currentuser() ORDER BY priority asc, created"
+
+# list issues (alias)
+jira mine
+
+# search for issues
+jira list --query 'resolution = unresolved and text ~ "some text"'
+
+# view issue
+jira view ISSUE_ID
+
+# open in browser
+jira browse ISSUE_ID
+
+# transitions #################################################################
+
+# view valid transitions for issue
+jira transitions ISSUE_ID
+
+# transition issue to a given state
+jira transition TRANSITION ISSUE_ID
+# e.g.
+jira transition Rejected AD-1000
+
+# predefined commands for transitions
+jira acknowledge ISSUE_ID
+jira backlog ISSUE_ID
+jira close ISSUE_ID
+jira done ISSUE_ID
+jira in-progress ISSUE_ID
+jira reopen ISSUE_ID
+jira resolve ISSUE_ID
+jira start ISSUE_ID
+jira stop ISSUE_ID
+jira todo ISSUE_ID
+
+# editing and comments ########################################################
+
+# issues
+#
+# create issue
+jira create [--project=PROJECT]
+
+# create subtask
+jira subtask ISSUE_ID
+
+# edit (one) issue in editor
+jira edit ISSUE_ID
+
+# TODO: edit multiple issues using query
+
+# mark issue as blocker
+jira block BLOCKED_ISSUE_ID BLOCKING_ISSUE_ID
+
+# link two issues
+jira issuelink OUTWARD_ISSUE_ID ISSUE_LINK_TYPE INWARD_ISSUE_ID
+
+# view valid issue link types
+jira issuelinktypes
+
+# comments
+#
+# add comment
+# in editor
+jira comment ISSUE_ID
+# directly in the command line
+jira comment -m "comment text" --noedit ISSUE_ID
+
+# assignment
+#
+# assign to yourself
+jira take ISSUE_ID
+
+# assign to somebody
+jira assign ISSUE_ID '(MAIL_ADDRESS|DISPLAY_NAME)'
+
+# remove assignment
+jira unassign ISSUE_ID
+
+# add watcher
+jira watch ISSUE_ID '(MAIL_ADDRESS|DISPLAY_NAME)'
+
+# remove watcher
+jira watch '(-r|--remove)' ISSUE_ID '(MAIL_ADDRESS|DISPLAY_NAME)'
+
+# attachments #################################################################
+#
+# list attachments
+jira attach list ISSUE_ID
+
+# add attachment
+jira attach create ISSUE_ID FILE
+
+# download attachment
+jira attach get ATTACHMENT_ID
+
+# delete attachment
+jira attach remove ATTACHMENT_ID
+
+# jql #########################################################################
+#
+# reserved characters: space (" ") + . , ; ? | * / % ^ $ # @ [ ]
+# (escape with single or double quotes, or double backslash)
+#
+# some queries of practical use
+#
+# time based
+--query "created < '-2w'"
+--query "updated < '2021-05-10'"
+--query "updated > '-2w' and updated < '-1w'"
+--query "resolved > -1h"
+--query "lastViewed > '-1d'"
+--query "due = now()"
+
+# text fields: summary, text, description, comment
+--query "comment ~ 'some text'"
+
+--query "attachments IS NOT EMPTY"
+
+# user-related
+--query "creator is currentUser() and assignee != currentUser() and resolution = unresolved"
+--query "assignee = currentUser() and resolution = unresolved and due <= '2021-05-30'"
+--query "reporter = currentUser()"
+--query "reporter = currentUser() and creator != currentUser() and resolution = unresolved"
+--query "watcher = currentUser() and creator != currentUser() and resolution = unresolved"
+
+--query "(issueType|type) != Task"
+--query "(issueKey|id|issue|key) = AD-1000"
+--query "priority = High"
+--query "priority WAS NOT IN (High, Highest)"
+--query "project = 'Administracja'"
+--query "project WAS NOT 123"
+# find subtasks of a specific issue
+--query "parent = AD-1000"
+
+# issues linked to a specific issue
+--query "issueLink = AD-1000"
+--query "issueLink['blocks'] = AD-1000" # or "issueBlocks = AD-1000"
+--query "issueLink['is blocked by'] = AD-1000" # or "issueIsBlockedBy = AD-1000"
+
+# functions ###################################################################
+#
+# currentLogin(), lastLogin() -> time
+# (start|end)Of(Day|Week|Month|Year)() -> time
+# now() -> time
+# currentUser() -> login
+# issueHistory() -> recently viewed issues (50) - same as in the 'issues' drop down menu
+# linkedIssues(id [, linkType]) -> issue ids
+# membersOf(group) -> user logins
+# updatedBy(login [, dateFrom [, dateTo]]) -> issue ids
+# watchedIssues() -> issue ids
