@@ -1,0 +1,83 @@
+# vim: ft=sh ts=2:sts=2:sw=2:et
+
+# idrac7 ######################################################################
+
+# get help
+racadm help
+racadm help subcommand
+
+# general system info
+racadm getsysinfo
+racadm version
+racadm getractime
+
+# get fans, voltages, ps, memory etc. status
+racadm getsensorinfo
+
+# network info
+racadm getniccfg
+
+# view all licenses
+racadm license view
+
+###############################################################################
+
+# get frontpanel led status
+racadm getled
+
+# turn led blinking on or off
+racadm setled -l 1
+racadm setled -l 0
+
+###############################################################################
+
+racadm ping ADDRESS
+racadm traceroute ADDRESS
+
+###############################################################################
+
+# 'server actions'
+# options: -f # force
+# e.g. racadm serveraction powercycle -f
+racadm serveraction graceshutdown
+racadm serveraction powerdown
+racadm serveraction powerup
+racadm serveraction powercycle
+racadm serveraction hardreset
+racadm serveraction powerstatus
+# 'generate non-masking interrupt to halt system operation'
+racadm serveraction nmi
+
+###############################################################################
+
+# TODO: sshpkauth
+# TODO: sensorsettings
+
+
+###############################################################################
+
+# racadm storage - alias for 'racadm raid'
+
+racadm raid get status
+
+# get a list of objects of the specified type
+racadm raid get controllers|batteries|vdisks|pdisks|fans|emms|tempprobes|psus|enclosures
+
+# display all the properties
+racadm raid get controllers|batteries|vdisks|pdisks|fans|emms|tempprobes|psus|enclosures -o
+
+# display specific properties
+racadm raid get controllers|batteries|vdisks|pdisks|fans|emms|tempprobes|psus|enclosures -p PROPERTY[,PROPERTY2...]
+# e.g.
+racadm raid get controllers -o -p name,status
+
+# blink pdisk
+racadm raid blink:<PD FQQD>
+racadm raid unblink:<PD FQQD>
+# e.g.
+racadm raid blink:Disk.Bay.0:Enclosure.Internal.0-0:RAID.Integrated.1-1
+
+# TODO: systemconfig backup|restore
+# TODO: ssl*
+# TODO: ifconfig
+# TODO: get / set
