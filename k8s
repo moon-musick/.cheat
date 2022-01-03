@@ -4,3 +4,9 @@ kubectl delete pod --force --grace-period=0 POD_NAME
 
 # get pods running on a specific node
 k get pods --field-selector spec.nodeName=NODE_NAME
+
+# check readiness status of a pod (should yield 'True')
+k get pods POD_NAME -o 'jsonpath={..status.conditions[?(@.type="Ready")].status}'
+
+# check running status of a pod (should yield 'Running' for daemon pods and 'Succedeed' for jobs pods)
+k get pods POD_NAME --no-headers -o custom-columns=":status.phase"
