@@ -1,0 +1,60 @@
+# vim: ft=sh ts=2:sts=2:sw=2:et
+
+# show general information
+megacli -AdpAllInfo -aALL
+
+# list enclosures
+megacli -EncInfo -aALL
+
+# find enclosure ID
+megacli -EncInfo -a0 # look for 'Device ID'
+
+# list virtual/logical drives
+megacli -LDInfo -Lall -aALL
+
+# list physical drives
+megacli -PDList -aALL
+
+# show physical drive details
+megacli -PDInfo -PhysDrv '[ENCID:DISKID]' -aALL
+# e.g.
+megacli -PDInfo -PhysDrv '[32:0]' -aALL
+
+# some general diagnostic info
+megacli -PDList -a0 | grep -Ei '(slot number|firmware state|inquiry data)'
+
+###############################################################################
+
+# locate disk (blink disk led) - NOT TESTED
+megacli -PDLocate -start -PhysDrv '[ENCID:DISKID]' -a0
+megacli -PDLocate -stop -PhysDrv '[ENCID:DISKID]' -a0
+
+###############################################################################
+
+# replace failed disk - NOT TESTED
+
+# set the disk offline
+megacli -pdoffline -physdrv '[ENCID:DISKID]' -a0
+# mark disk as missing
+megacli -pdmarkmissing -physdrv '[ENCID:DISKID]' -aALL
+# mark as prepared for removal
+megacli -pdprprmv -physdrv '[ENCID:DISKID]' -a0
+# locate physical disk
+megacli -pdlocate -start -physdrv '[ENCID:DISKID]' -a0
+# replace physical disk
+# add the disk to the array
+# array value is 'Span Reference' (as int) retrievable from megacli -CfgDsply -aALL
+# row value is the row parameter of the physical disk in the span or array starting with zero, not physical disk id
+# get the values from megacli -cfgdsply -aALL | grep -Ei '(span reference|inquiry|physical disk:|firmware state)'
+megacli -pdreplacemissing -physdrv '[ENCID:DISKID]' -arrayX -rowY -a0
+# start the rebuild
+megacli -pdrbld -start -physdrv '[ENCID:DISKID]' -a0
+# (optional) watch the progress
+megacli -pdrbld -showprog -physdrv '[ENCID:DISKID]' -a0
+
+###############################################################################
+
+# clear drive
+megacli -pdclear -start -physdrv '[ENCID:DISKID]' -aALL
+# show progress
+megacli -pdclear -showprog -physdrv '[ENCID:DISKID]' -aALL
