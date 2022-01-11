@@ -20,6 +20,10 @@ racadm getniccfg
 # view all licenses
 racadm license view
 
+# get version of DRAC
+racadm getconfig -i idracinfo -o idractype
+# 10 is iDRAC6, 16 is iDRAC7
+
 ###############################################################################
 
 # get frontpanel led status
@@ -50,9 +54,37 @@ racadm serveraction nmi
 
 ###############################################################################
 
-# TODO: sshpkauth
-# TODO: sensorsettings
+# view user details
+racadm getconfig -u USERNAME
 
+# change password
+racadm config -g cfgUserAdmin -o cfgUserAdminPassword -i USER_INDEX NEW_PASSWORD
+
+# disable/enable user
+racadm config -g cfgUserAdmin -o cfgUserAdminEnable -i USER_INDEX 0|1
+
+# most likely to list/view all configured users one needs to iterate by all
+# supported indices (up to 16 users possible with iDRAC 6 & 7)
+racadm get iDRAC.Users.USER_INDEX
+# e.g.
+racadm get iDRAC.Users.4
+
+###############################################################################
+
+# view all keys used a by a user
+racadm sshpkauth -iUSER_INDEX -kall -v
+
+# add an ssh public key (up to 4 keys supported)
+racadm sshpkauth -iUSER_INDEX -kKEY_INDEX -t PUBLIC_KEY_TEXT
+# or
+racadm sshpkauth -iUSER_INDEX -kKEY_INDEX -f PUBLIC_KEY_FILE
+
+# delete key
+racadm sshpkauth -iUSER_INDEX -kKEY_INDEX -d
+
+###############################################################################
+
+# TODO: sensorsettings
 
 ###############################################################################
 
@@ -72,8 +104,8 @@ racadm raid get controllers|batteries|vdisks|pdisks|fans|emms|tempprobes|psus|en
 racadm raid get controllers -o -p name,status
 
 # blink pdisk
-racadm raid blink:<PD FQQD>
-racadm raid unblink:<PD FQQD>
+racadm raid 'blink:<PD FQQD>'
+racadm raid 'unblink:<PD FQQD>'
 # e.g.
 racadm raid blink:Disk.Bay.0:Enclosure.Internal.0-0:RAID.Integrated.1-1
 
