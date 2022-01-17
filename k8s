@@ -1,4 +1,12 @@
 # vim: ft=sh ts=2:sts=2:sw=2:et
+
+# find pods for a specific label
+kubectl get pods -l LABEL=VALUE
+# e.g.
+kubectl get pods -l app=gitlab
+# print only name of found pods (for further processing)
+kubectl get pods -l app=gitlab -o name
+
 # force delete pod
 kubectl delete pod --force --grace-period=0 POD_NAME
 
